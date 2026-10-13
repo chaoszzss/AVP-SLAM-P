@@ -1,0 +1,52 @@
+# AVM-SLAM dataset config for RGB pipeline (4 cameras)
+
+# Number of cameras to use (Camera0~Camera3)
+cameraNum: 4
+
+# Camera yaw offsets relative to Camera0 (radians)
+rotateDeg1: -1.57079632679   # Camera1: -90 deg
+rotateDeg2: 3.14159265359    # Camera2: 180 deg
+rotateDeg3: 1.57079632679    # Camera3: +90 deg
+rotateDeg4: 0.0              # Unused
+rotateDeg5: 0.0              # Unused
+
+# Camera intrinsics (approx. 1280x960 scaled from default)
+K: [674.4168821936088, 0.0, 640.5,
+        0.0, 674.4168821936088, 480.5,
+        0.0, 0.0, 1.0]
+
+# Base rotation / translation (kept from original config)
+R0: [0, 1.0, 0,
+        0.0, 0, 1,
+        1.0, 0.0, 0.0]
+T0: [0,
+     0.56,
+     0.0]
+
+# Image downsample (process every Nth pixel)
+imageRowIncrease: 2
+imageColIncrease: 4
+cameraRealiableDis: 8
+skyColor: 178
+
+# Point cloud / mapping params
+pointCloudLeafSize: 0.1
+farPointThresh: 20
+closePointThresh: 0.1
+
+mapSave: true
+mapSaveLocation: "/home/chaoszzss/my_ws/src/AVP-SLAM-PLUS/avp_slam_plus/data/avm_map.pcd"
+odomKeyFramDisThresh: 1.0
+InvalidColorThresh: 60
+
+useICP: false
+IcpMaxCorrespondenceDistance: 20
+IcpMaximumIterations: 100
+IcpTransformationEpsilon: 1e-10
+IcpEuclideanFitnessEpsilon: 0.001
+icpFitnessScoreThresh: 0.3
+
+useNDT: true
+ndtTransformationEpsilon: 0.01
+ndtResolution: 1.0
+ndtFitnessScoreThresh: 0.3

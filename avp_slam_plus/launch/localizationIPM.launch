@@ -1,0 +1,36 @@
+<launch>
+    <!-- IPM localization pipeline:
+         1) pointCloudFromIPM  2) localization -->
+
+    <arg name="ipm_topic" default="/ipm_label" />
+    <arg name="gps_odom_topic" default="/gps_odom" />
+    <arg name="map_path" default="/home/chaoszzss/my_ws/src/AVP-SLAM-PLUS/avp_slam_plus/data/ipmMap.pcd" />
+    <arg name="save_tum_trajectory" default="true" />
+    <arg name="icp_tum_path" default="/home/chaoszzss/my_ws/src/AVP-SLAM-PLUS/avp_slam_plus/output/bloop_estimation.tum" />
+    <arg name="gps_tum_path" default="/home/chaoszzss/my_ws/src/AVP-SLAM-PLUS/avp_slam_plus/output/bloop_gps.tum" />
+    <arg name="launch_rviz" default="true" />
+
+    <!-- Load IPM defaults (pixel scale, filters, thresholds, etc.) -->
+    <rosparam file="$(find avp_slam_plus)/config/configFileIPM.yaml" command="load" />
+    <!-- Compatibility override for nodes that still read global params -->
+    <param name="ipm_topic" value="$(arg ipm_topic)" />
+    <param name="odom_topic" value="$(arg gps_odom_topic)" />
+
+    <node name="pointCloudFromIPM" pkg="avp_slam_plus" type="pointCloudFromIPM" output="screen">
+        <param name="ipm_topic" value="$(arg ipm_topic)" />
+        <param name="odom_topic" value="$(arg gps_odom_topic)" />
+    </node>
+
+    <node name="localization" pkg="avp_slam_plus" type="localization" output="screen">
+        <param name="mapSaveLocation" value="$(arg map_path)" />
+        <param name="odom_topic" value="/ipm_odom" />
+        <param name="useGpsPrior" value="true" />
+        <param name="saveTumTrajectory" value="$(arg save_tum_trajectory)" />
+        <param name="icpTumSavePath" value="$(arg icp_tum_path)" />
+        <param name="gpsTumSavePath" value="$(arg gps_tum_path)" />
+    </node>
+
+    <node if="$(arg launch_rviz)" name="rviz" pkg="rviz" type="rviz"
+          args="-d $(find avp_slam_plus)/rviz/localizationIPM.rviz"
+          required="false" />
+</launch>

@@ -1,0 +1,23 @@
+<launch>
+    <!-- Offline AVM-SLAM dataset playback (RGB pipeline, 4 cameras) -->
+
+    <arg name="dataset_root" default="/home/chaoszzss/My_files/SLAM_files/Datasets/AVM-SLAM_Dataset/data1" />
+    <arg name="play_rate" default="1.0" />
+
+    <!-- Use wall time; playback script publishes real-time stamps -->
+    <param name="use_sim_time" value="false" />
+
+    <!-- Load AVM-specific config -->
+    <rosparam file="$(find avp_slam_plus)/config/configFileAVM.yaml" command="load" />
+
+    <!-- Publish Camera0~Camera3 images from dataset -->
+    <node pkg="avp_slam_plus" type="play_avm_dataset.py" name="play_avm_dataset" output="screen">
+        <param name="dataset_root" value="$(arg dataset_root)" />
+        <param name="play_rate" value="$(arg play_rate)" />
+    </node>
+
+    <!-- Point cloud generation + mapping -->
+    <node name="pointCloudFromRGB" pkg="avp_slam_plus" type="pointCloudFromRGB" output="screen" />
+    <node name="mapping" pkg="avp_slam_plus" type="mapping" output="screen" />
+
+</launch>

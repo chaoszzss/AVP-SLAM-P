@@ -1,0 +1,24 @@
+<launch>
+    <!-- AVP-SLAM-PLUS IPM Mode -->
+    <!-- For compatibility with floop dataset (ipm_semantic_label + gps_odom) -->
+    <!-- Uses GPS odometry directly for pose estimation (same as avp_mapping) -->
+
+    <!-- Load IPM configuration parameters -->
+    <rosparam file="$(find avp_slam_plus)/config/configFileIPM.yaml" command="load" />
+
+    <!-- Generate point cloud from IPM semantic segmentation image -->
+    <node name="pointCloudFromIPM" pkg="avp_slam_plus" type="pointCloudFromIPM" output="screen">
+        <param name="ipm_topic" value="/ipm_semantic_label" />
+        <param name="odom_topic" value="/gps_odom" />
+    </node>
+
+    <!-- SLAM mapping node using GPS odometry -->
+    <node name="mappingIPM" pkg="avp_slam_plus" type="mappingIPM" output="screen">
+    </node>
+
+    <!-- RVIZ visualization -->
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="-d $(find avp_slam_plus)/rviz/slamIPM.rviz"
+          required="false" />
+
+</launch>

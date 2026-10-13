@@ -1,0 +1,84 @@
+# Configuration file for IPM semantic segmentation mode
+# For compatibility with floop dataset (ipm_semantic_label + gps_odom)
+
+# ==================== IPM Image Parameters ====================
+# IPM image dimensions (pixels)
+ipmWidth: 1354
+ipmHeight: 1632
+
+# Pixel to meter scale (meters per pixel)
+pixelScale: 0.02
+
+# IPM image center (pixels)
+ipmCenterX: 677
+ipmCenterY: 816
+
+# Offset from vehicle center to rear axle (meters)
+rearAxleOffset: 1.32
+
+# Pixel skip for downsampling (process every Nth pixel)
+pixelSkip: 2
+
+# Minimum time interval between processing frames (seconds, 20Hz max)
+minProcessInterval: 0.05
+
+# ==================== Semantic Color Thresholds (BGR format) ====================
+# Slot lines - Green (high G, low B and R)
+slotColorB: 0
+slotColorG: 255
+slotColorR: 0
+slotColorThresh: 80
+
+# Arrow/direction markers - Yellow (high G and R, low B)
+arrowColorB: 0
+arrowColorG: 255
+arrowColorR: 255
+arrowColorThresh: 80
+
+# Dash/lane lines - Blue (high B, low G and R)
+dashColorB: 255
+dashColorG: 0
+dashColorR: 0
+dashColorThresh: 80
+
+# ==================== Point Cloud Processing ====================
+# Voxel grid leaf size for downsampling (meters)
+pointCloudLeafSize: 0.1
+
+# Distance thresholds (meters)
+farPointThresh: 20
+closePointThresh: 0.1
+
+# ==================== Mapping Parameters ====================
+# Map save settings
+mapSave: true
+mapSaveLocation: "/home/chaoszzss/my_ws/src/AVP-SLAM-PLUS/avp_slam_plus/data/ipmMap.pcd"
+
+# Keyframe distance threshold (meters)
+# New keyframe when robot moves more than this distance
+odomKeyFramDisThresh: 0.5
+
+# Invalid color threshold for feature extraction
+# Points with R,G,B all below this value are discarded
+InvalidColorThresh: 30
+
+# ==================== ICP Registration Parameters ====================
+useICP: false
+IcpMaxCorrespondenceDistance: 20
+IcpMaximumIterations: 100
+IcpTransformationEpsilon: 1e-10
+IcpEuclideanFitnessEpsilon: 0.001
+icpFitnessScoreThresh: 0.3
+
+# ==================== NDT Registration Parameters ====================
+useNDT: true
+ndtTransformationEpsilon: 0.01
+ndtResolution: 1.0
+ndtFitnessScoreThresh: 0.5
+
+# ==================== ROS Topic Configuration ====================
+# IPM semantic label image topic
+ipm_topic: "/ipm_semantic_label"
+
+# GPS odometry topic
+odom_topic: "/gps_odom"
